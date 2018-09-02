@@ -69,11 +69,13 @@ export default (parsed) => {
   svgString += '<svg xmlns="http://www.w3.org/2000/svg"'
   svgString += ' xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"'
   svgString += ' preserveAspectRatio="xMinYMin meet"'
-  svgString += ' viewBox="' +
-    (bbox.minX) + ' ' +
-    (-bbox.maxY) + ' ' +
-    (bbox.width) + ' ' +
-    (bbox.height) + '"'
-  svgString += ' width="100%" height="100%">' + paths.join('') + '</svg>'
+
+  // MrBeam modification START
+  svgString += ' viewBox="' + [bbox.minX, 0, bbox.width, bbox.height].join(' ') + '"' // maybe -bbox.maxY instead 0 - like in upstream ?
+  svgString += ' width="' + bbox.width + '" height="' + bbox.height + '">'
+  svgString += '<!-- Created with dxf.js -->'
+  svgString += paths.join('') + '</svg>'
+  // MrBeam modification END
+
   return pd.xml(svgString)
 }
